@@ -1,0 +1,56 @@
+version: "2"
+services:
+  colab:
+    container_name: colab
+    restart: always
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo_colab
+    links:
+      - mongo_colab
+    environment:
+      - ENVIRONMENT=prod
+      - HOST_URL=domain.com
+      - PORT=3000
+      - MONGO_URI=mongodb://mongo_colab:27017/colab
+      - JWT_SECRET=averysecretsecret
+      - WAIT_HOSTS=mongo_colab:27017
+    volumes:
+      - "./src:/usr/src/app/src"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1k"
+        max-file: "3"
+  mongo_colab:
+    container_name: mongo_colab
+    image: mongo
+    volumes:
+      - /data/db
+    ports:
+      - "27017:27017"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1k"
+        max-file: "3"
+  portainer_colab:
+    container_name: portainer_colab
+    image: portainer/portainer
+    command: -H unix:///var/run/docker.sock
+    restart: always
+    ports:
+      - 9000:9000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1k"
+        max-file: "3"
+
+volumes:
+  portainer_data:
