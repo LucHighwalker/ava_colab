@@ -1,7 +1,5 @@
 import * as express from 'express';
 
-import ping from './ping.controller';
-
 class Ping {
 	public router: express.Router;
 
