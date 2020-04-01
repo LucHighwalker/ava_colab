@@ -1,8 +1,8 @@
 import * as express from 'express';
 
-import info from './info.controller';
+import ping from './ping.controller';
 
-class Info {
+class Ping {
 	public router: express.Router;
 
 	constructor() {
@@ -11,9 +11,12 @@ class Info {
 		this.router.route('/');
 
 		this.router.get("/", (_, res) => {
-			res.status(200).json(info.getInfo())
+			res.status(200).json({
+				"ok": true,
+				"msg": "pong"
+			})
 		})
 	}
 }
 
-export default new Info().router;
+export default new Ping().router;

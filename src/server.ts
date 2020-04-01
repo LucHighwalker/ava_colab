@@ -3,8 +3,8 @@ import * as mongoose from "mongoose";
 import * as bodyParser from "body-parser";
 import * as cors from "cors";
 import * as expressSanitizer from 'express-sanitizer';
-
 import infoRoutes from "./info/info.routes";
+import pingRoutes from "./ping/ping.routes";
 
 class Server {
 	public server;
@@ -35,6 +35,7 @@ class Server {
 
 	private mountRoutes(): void {
 		this.server.use("/info", infoRoutes);
+		this.server.use("/ping", pingRoutes);
 	}
 }
 
