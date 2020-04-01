@@ -9,7 +9,10 @@ export const ConversationSchema: Schema = new Schema({
 		type: String,
 	},
 	mutations: {
-		type: [Object],
+		type: [{
+			type: Schema.Types.ObjectId,
+			rel: "Mutation"
+		}],
 	},
 	creator: {
 		type: String,
