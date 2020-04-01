@@ -1,0 +1,20 @@
+{
+    "ok": true,
+    "author": {
+      "email": "email@luc.gg",
+      "name": "Luc Boettner"
+    },
+    "frontend": {
+      "url": "string, the url of your frontend."
+    },
+    "language": "node.js (ts)",
+    "sources": {
+        "backend": "https://github.com/LucHighwalker/ava_colab",
+        "frontend": "N/A"
+    },
+    "answers": {
+      "1": "string, answer to the question 1",
+      "2": "string, answer to the question 2",
+      "3": "string, answer to the question 3"
+    }
+  }
