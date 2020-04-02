@@ -26,11 +26,7 @@ class ConversationController {
 
 			let text = "";
 
-			console.log("reading mutations...")
-			console.log(conversation)
-
 			conversation.mutations.forEach(mutation => {
-				console.log("Mutation: ", mutation)
 				const start = mutation.data._index;
 				const end = start + mutation.data.length;
 
