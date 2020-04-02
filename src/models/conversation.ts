@@ -4,23 +4,26 @@ import { Conversation } from "../interfaces/conversation";
 export const ConversationSchema: Schema = new Schema({
 	lastMutation: {
 		type: Schema.Types.ObjectId,
-		rel: "Mutation"
+		ref: "Mutation"
 	},
 	text: {
-		type: String,
+		type: String
 	},
-	mutations: {
-		type: [{
+	mutations: [
+		{
 			type: Schema.Types.ObjectId,
-			rel: "Mutation"
-		}],
-	},
+			ref: "Mutation"
+		}
+	],
 	creator: {
 		type: String,
-		required: true,
-	},
+		required: true
+	}
 });
 
-const ConversationModel: Model<Conversation> = model<Conversation>("Conversation", ConversationSchema);
+const ConversationModel: Model<Conversation> = model<Conversation>(
+	"Conversation",
+	ConversationSchema
+);
 
 export default ConversationModel;

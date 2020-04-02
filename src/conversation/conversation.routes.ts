@@ -26,6 +26,24 @@ class Conversation {
 			}
 		});
 
+		this.router.get("/read/:id", async (req, res) => {
+			try {
+				const { id } = req.params;
+
+				const text = await conversation.readConversation(id);
+				res.status(200).json({
+					text,
+					msg: "",
+					ok: true
+				});
+			} catch (err) {
+				res.status(500).json({
+					msg: err.message,
+					ok: false
+				});
+			}
+		});
+
 		this.router.get("/:id", async (req, res) => {
 			try {
 				const { id } = req.params;

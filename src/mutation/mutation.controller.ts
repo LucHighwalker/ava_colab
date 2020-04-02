@@ -4,12 +4,12 @@ import { Mutation } from "../interfaces/mutation";
 import conversations from "../conversation/conversation.controller"
 
 class MutationController {
-	public async create(body: any): Promise<Mutation | Error> {
+	public async create(body: any): Promise<String | Error> {
 		try {
 			const mutation = new MutationModel(body);
 			await mutation.save();
 			await conversations.addMutation(mutation.conversationId, mutation);
-			return mutation;
+			return await conversations.readConversation(mutation.conversationId);
 		} catch (err) {
 			throw err;
 		}

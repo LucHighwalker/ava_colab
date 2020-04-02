@@ -18,6 +18,35 @@ class ConversationController {
 		}
 	}
 
+	public async readConversation(id: String): Promise<String> {
+		try {
+			const conversation = await ConversationModel.findById(id).populate(
+				"mutations"
+			);
+
+			let text = "";
+
+			console.log("reading mutations...")
+			console.log(conversation)
+
+			conversation.mutations.forEach(mutation => {
+				console.log("Mutation: ", mutation)
+				const start = mutation.data._index;
+				const end = start + mutation.data.length;
+
+				if (mutation.data.type == "insert") {
+					text = text.slice(0, start) + mutation.data.text + text.slice(end);
+				} else if (mutation.data.type == "delete") {
+					// TODO
+				}
+			});
+
+			return text;
+		} catch (err) {
+			throw err;
+		}
+	}
+
 	public async getAll(): Promise<Conversation[]> {
 		try {
 			const conversations = await ConversationModel.find();

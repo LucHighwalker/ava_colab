@@ -1,16 +1,16 @@
 import { Document } from "mongoose";
 
 export interface Mutation extends Document {
-	author: String;
-	conversationId: String;
+	author: string;
+	conversationId: string;
 	data: {
-		_index: Number;
-		length?: Number;
-		text?: String;
-		type: String;
+		_index: number;
+		length?: number;
+		text?: string;
+		type: string;
 	}
 	origin: {
-		Alice: Number;
-		Bob: Number;
+		Alice: number;
+		Bob: number;
 	}
 }

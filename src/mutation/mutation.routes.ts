@@ -13,9 +13,9 @@ class Mutation {
 		this.router.post("/", async (req, res) => {
 			try {
 				const body = req.body;
-				const mutagen = await mutation.create(body);
+				const text = await mutation.create(body);
 				res.status(200).json({
-					mutation: mutagen,
+					text,
 					msg: "",
 					ok: true
 				});
