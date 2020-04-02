@@ -44,7 +44,7 @@ class Conversation {
 			}
 		});
 
-		this.router.put("/", async (req, res) => {
+		this.router.post("/", async (req, res) => {
 			try {
 				const body = req.body;
 
