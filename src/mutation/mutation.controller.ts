@@ -20,6 +20,7 @@ class MutationController {
 			const lastMutation = await MutationModel.findById(
 				conversation.lastMutation
 			);
+			
 			if (this.originsAreSame(lastMutation, mutation)) {
 				mutation.origin[lastMutation.author]
 					? (mutation.origin[lastMutation.author] += 1)
@@ -34,6 +35,7 @@ class MutationController {
 					}
 				}
 			}
+
 			await mutation.save();
 			await conversations.addMutation(mutation.conversationId, mutation);
 			return await conversations.readConversation(mutation.conversationId);
