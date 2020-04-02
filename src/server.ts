@@ -5,6 +5,7 @@ import * as cors from "cors";
 import * as expressSanitizer from 'express-sanitizer';
 import pingRoutes from "./ping/ping.routes";
 import infoRoutes from "./info/info.routes";
+import conversationRoutes from "./conversation/conversation.routes";
 
 class Server {
 	public server;
@@ -36,6 +37,7 @@ class Server {
 	private mountRoutes(): void {
 		this.server.use("/ping", pingRoutes);
 		this.server.use("/info", infoRoutes);
+		this.server.use("/conversation", conversationRoutes);
 	}
 }
 

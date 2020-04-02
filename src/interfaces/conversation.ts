@@ -4,6 +4,6 @@ import { Mutation } from "./mutation"
 export interface Conversation extends Document {
 	lastMutation: Object;
 	text: String;
-	mutations: [Mutation];
+	mutations: Mutation[];
 	creator: String;
 }
