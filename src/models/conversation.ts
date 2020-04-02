@@ -3,7 +3,8 @@ import { Conversation } from "../interfaces/conversation";
 
 export const ConversationSchema: Schema = new Schema({
 	lastMutation: {
-		type: Object,
+		type: Schema.Types.ObjectId,
+		rel: "Mutation"
 	},
 	text: {
 		type: String,
