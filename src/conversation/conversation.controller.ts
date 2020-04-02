@@ -28,12 +28,12 @@ class ConversationController {
 
 			conversation.mutations.forEach(mutation => {
 				const start = mutation.data._index;
-				const end = start + mutation.data.length;
 
 				if (mutation.data.type == "insert") {
-					text = text.slice(0, start) + mutation.data.text + text.slice(end);
+					text = text.slice(0, start) + mutation.data.text + text.slice(start);
 				} else if (mutation.data.type == "delete") {
-					// TODO
+					const end = start + mutation.data.length;
+					text = text.slice(0, start) + text.slice(end);
 				}
 			});
 
