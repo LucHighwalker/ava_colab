@@ -4,7 +4,7 @@ import { Conversation } from "../interfaces/conversation";
 class ConversationController {
 	public async getAll(): Promise<Conversation[]> {
 		try {
-			const conversations = await ConversationModel.find({});
+			const conversations = await ConversationModel.find();
 			return conversations
 		} catch (err) {
 			throw err

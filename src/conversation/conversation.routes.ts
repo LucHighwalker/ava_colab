@@ -12,7 +12,7 @@ class Conversation {
 
 		this.router.get("/", async (_, res) => {
 			try {
-				const conversations = conversation.getAll();
+				const conversations = await conversation.getAll();
 				res.status(200).json({
 					conversations,
 					msg: "",
@@ -30,7 +30,7 @@ class Conversation {
 			try {
 				const { id } = req.params;
 
-				const conv = conversation.find(id);
+				const conv = await conversation.find(id);
 				res.status(200).json({
 					conversation: conv,
 					msg: "",

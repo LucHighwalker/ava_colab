@@ -6,6 +6,7 @@ import * as expressSanitizer from 'express-sanitizer';
 import pingRoutes from "./ping/ping.routes";
 import infoRoutes from "./info/info.routes";
 import conversationRoutes from "./conversation/conversation.routes";
+import mutationRoutes from "./mutation/mutation.routes";
 
 class Server {
 	public server;
@@ -37,7 +38,8 @@ class Server {
 	private mountRoutes(): void {
 		this.server.use("/ping", pingRoutes);
 		this.server.use("/info", infoRoutes);
-		this.server.use("/conversation", conversationRoutes);
+		this.server.use("/conversations", conversationRoutes);
+		this.server.use("/mutations", mutationRoutes);
 	}
 }
 
