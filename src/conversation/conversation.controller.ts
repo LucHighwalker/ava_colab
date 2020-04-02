@@ -1,13 +1,29 @@
 import ConversationModel from "../models/conversation";
 import { Conversation } from "../interfaces/conversation";
+import { Mutation } from "../interfaces/mutation";
 
 class ConversationController {
+	public async addMutation(
+		id: String,
+		mutation: Mutation
+	): Promise<Conversation> {
+		try {
+			const conversation = await this.find(id);
+			conversation.mutations.push(mutation);
+			conversation.lastMutation = mutation;
+			await conversation.save();
+			return conversation;
+		} catch (err) {
+			throw err;
+		}
+	}
+
 	public async getAll(): Promise<Conversation[]> {
 		try {
 			const conversations = await ConversationModel.find();
-			return conversations
+			return conversations;
 		} catch (err) {
-			throw err
+			throw err;
 		}
 	}
 
@@ -21,36 +37,33 @@ class ConversationController {
 		}
 	}
 
-	public async find(id: string): Promise<Conversation> {
+	public async find(id: String): Promise<Conversation> {
 		try {
 			const conversation = await ConversationModel.findById(id);
-			return conversation
+			return conversation;
 		} catch (err) {
-			throw err
+			throw err;
 		}
 	}
 
-	public async update(id: string, body: any): Promise<Conversation> {
+	public async update(id: String, body: any): Promise<Conversation> {
 		try {
-			const conversation = await ConversationModel.findByIdAndUpdate(
-				id,
-				body,
-				{
-					new: true,
-					runValidators: true
-				});
-			return conversation
+			const conversation = await ConversationModel.findByIdAndUpdate(id, body, {
+				new: true,
+				runValidators: true
+			});
+			return conversation;
 		} catch (err) {
-			throw err
+			throw err;
 		}
 	}
 
-	public async delete(id: string): Promise<string> {
+	public async delete(id: String): Promise<String> {
 		try {
-			await ConversationModel.findByIdAndRemove(id)
-			return id
+			await ConversationModel.findByIdAndRemove(id);
+			return id;
 		} catch (err) {
-			throw err
+			throw err;
 		}
 	}
 }
