@@ -29,7 +29,7 @@ class MutationController {
 					if (lastMutation.data.type == "insert") {
 						mutation.data._index += lastMutation.data.length;
 					} else if (lastMutation.data.type == "delete") {
-						mutation.data._index += lastMutation.data.length;
+						mutation.data._index -= lastMutation.data.length;
 						if (mutation.data._index < 0) mutation.data._index = 0;
 					}
 				}
