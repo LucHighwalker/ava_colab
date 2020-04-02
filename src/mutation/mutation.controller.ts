@@ -1,12 +1,39 @@
 import MutationModel from "../models/mutation";
 import { Mutation } from "../interfaces/mutation";
 
-import conversations from "../conversation/conversation.controller"
+import conversations from "../conversation/conversation.controller";
 
 class MutationController {
+	private originsAreSame(mutA: Mutation, mutB: Mutation): Boolean {
+		Object.keys(mutA.origin).forEach(key => {
+			if (mutA[key] !== mutB[key]) {
+				return false;
+			}
+		});
+		return true;
+	}
+
 	public async create(body: any): Promise<String | Error> {
 		try {
 			const mutation = new MutationModel(body);
+			const conversation = await conversations.find(mutation.conversationId);
+			const lastMutation = await MutationModel.findById(
+				conversation.lastMutation
+			);
+			if (this.originsAreSame(lastMutation, mutation)) {
+				mutation.origin[lastMutation.author]
+					? (mutation.origin[lastMutation.author] += 1)
+					: (mutation.origin[lastMutation.author] = 1);
+
+				if (lastMutation.data._index <= mutation.data._index) {
+					if (lastMutation.data.type == "insert") {
+						mutation.data._index += lastMutation.data.length;
+					} else if (lastMutation.data.type == "delete") {
+						mutation.data._index += lastMutation.data.length;
+						if (mutation.data._index < 0) mutation.data._index = 0;
+					}
+				}
+			}
 			await mutation.save();
 			await conversations.addMutation(mutation.conversationId, mutation);
 			return await conversations.readConversation(mutation.conversationId);
