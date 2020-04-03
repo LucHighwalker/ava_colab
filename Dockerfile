@@ -1,4 +1,4 @@
-FROM node:11
+FROM node:12.16.1
 ARG ENVIRONMENT
 
 RUN mkdir -p /usr/src/app
