@@ -2,7 +2,12 @@ import * as express from "express";
 import * as mongoose from "mongoose";
 import * as bodyParser from "body-parser";
 import * as cors from "cors";
-import * as expressSanitizer from 'express-sanitizer';
+import * as expressSanitizer from "express-sanitizer";
+import * as http from "http";
+
+import * as socket from "socket.io";
+import socketConnection from "./socket";
+
 import pingRoutes from "./ping/ping.routes";
 import infoRoutes from "./info/info.routes";
 import conversationRoutes from "./conversation/conversation.routes";
@@ -14,6 +19,7 @@ class Server {
 	constructor() {
 		this.server = express();
 		this.connectDb();
+		this.connectSocketIO();
 		this.applyMiddleware();
 		this.mountRoutes();
 	}
@@ -26,6 +32,13 @@ class Server {
 		});
 		const db = mongoose.connection;
 		db.on("error", console.error.bind(console, "MongoDB Connection error"));
+	}
+
+	private connectSocketIO(): void {
+		const server = new http.Server(this.server);
+		const io = socket(server);
+
+		io.on("connection", socketConnection);
 	}
 
 	private applyMiddleware(): void {
