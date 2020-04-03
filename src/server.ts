@@ -14,14 +14,31 @@ import conversationRoutes from "./conversation/conversation.routes";
 import mutationRoutes from "./mutation/mutation.routes";
 
 class Server {
-	public server;
+	public server: http.Server;
+	public app: express.Express;
+	public io: socket.Server;
 
 	constructor() {
-		this.server = express();
+		this.app = express();
+		this.createServer();
 		this.connectDb();
 		this.connectSocketIO();
 		this.applyMiddleware();
 		this.mountRoutes();
+	}
+
+	public listen(port: String | Number): void {
+		this.server.listen(port, (error: Error) => {
+			if (error) {
+				return console.log(error);
+			}
+		
+			return console.log(`Server is listening on port: ${port}`);
+		});
+	}
+
+	private createServer(): void {
+		this.server = http.createServer(this.app);
 	}
 
 	private connectDb(): void {
@@ -35,25 +52,30 @@ class Server {
 	}
 
 	private connectSocketIO(): void {
-		const server = new http.Server(this.server);
-		const io = socket(server);
-
-		io.on("connection", socketConnection);
+		this.io = socket.listen(this.server, {
+			origins: "http://192.168.1.15:3001",
+			path: "/socket"
+		});
+		this.io.on("connect", socketConnection);
 	}
 
 	private applyMiddleware(): void {
-		this.server.use(expressSanitizer());
-		this.server.use(bodyParser.json());
-		this.server.use(bodyParser.urlencoded({ extended: true }));
-		this.server.use(cors());
+		this.app.use(expressSanitizer());
+		this.app.use(bodyParser.json());
+		this.app.use(bodyParser.urlencoded({ extended: true }));
+		this.app.use(
+			cors({
+				origin: "http://192.168.1.15:3001 https://app.ava.me"
+			})
+		);
 	}
 
 	private mountRoutes(): void {
-		this.server.use("/ping", pingRoutes);
-		this.server.use("/info", infoRoutes);
-		this.server.use("/conversations", conversationRoutes);
-		this.server.use("/mutations", mutationRoutes);
+		this.app.use("/ping", pingRoutes);
+		this.app.use("/info", infoRoutes);
+		this.app.use("/conversations", conversationRoutes);
+		this.app.use("/mutations", mutationRoutes);
 	}
 }
 
-export default new Server().server;
+export default new Server();
