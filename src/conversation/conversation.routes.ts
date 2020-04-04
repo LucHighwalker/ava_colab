@@ -30,9 +30,10 @@ class Conversation {
 			try {
 				const { id } = req.params;
 
-				const text = await conversation.readConversation(id);
+				const {text, lastMutation} = await conversation.readConversation(id);
 				res.status(200).json({
 					text,
+					lastMutation,
 					msg: "",
 					ok: true
 				});

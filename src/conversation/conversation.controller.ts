@@ -18,15 +18,18 @@ class ConversationController {
 		}
 	}
 
-	public async readConversation(id: String): Promise<String> {
+	public async readConversation(
+		id: String
+	): Promise<any> {
 		try {
-			const conversation = await ConversationModel.findById(id).populate(
-				"mutations"
-			);
+			const conversation = await ConversationModel.findById(id)
+				.populate("mutations")
+				.populate("lastMutation");
+			const { lastMutation } = conversation;
 
 			let text = "";
 
-			conversation.mutations.forEach(mutation => {
+			conversation.mutations.forEach((mutation) => {
 				const start = mutation.data._index;
 
 				if (mutation.data.type == "insert") {
@@ -37,7 +40,10 @@ class ConversationController {
 				}
 			});
 
-			return text;
+			return {
+				text,
+				lastMutation,
+			};
 		} catch (err) {
 			throw err;
 		}
@@ -75,7 +81,7 @@ class ConversationController {
 		try {
 			const conversation = await ConversationModel.findByIdAndUpdate(id, body, {
 				new: true,
-				runValidators: true
+				runValidators: true,
 			});
 			return conversation;
 		} catch (err) {
