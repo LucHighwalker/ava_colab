@@ -18,6 +18,7 @@ class ConversationController {
 		}
 	}
 
+	// TODO create interface
 	public async readConversation(
 		id: String
 	): Promise<any> {
