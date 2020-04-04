@@ -5,12 +5,17 @@ import conversations from "../conversation/conversation.controller";
 
 class MutationController {
 	private originsAreSame(mutA: Mutation, mutB: Mutation): Boolean {
-		Object.keys(mutA.origin).forEach(key => {
+		if (mutA === null || mutB === null) return false;
+
+		let same = true;
+
+		Object.keys(mutA.origin).forEach((key) => {
 			if (mutA[key] !== mutB[key]) {
-				return false;
+				same = false;
+				return;
 			}
 		});
-		return true;
+		return same;
 	}
 
 	// TODO create interface.
@@ -21,9 +26,10 @@ class MutationController {
 			const lastMutation = await MutationModel.findById(
 				conversation.lastMutation
 			);
-			
+
 			if (this.originsAreSame(lastMutation, mutation)) {
-				mutation.origin[lastMutation.author]
+				console.log("origins conflict");
+				mutation.origin[lastMutation.author] !== undefined
 					? (mutation.origin[lastMutation.author] += 1)
 					: (mutation.origin[lastMutation.author] = 1);
 
@@ -31,7 +37,7 @@ class MutationController {
 					if (lastMutation.data.type == "insert") {
 						mutation.data._index += lastMutation.data.length;
 					} else if (lastMutation.data.type == "delete") {
-						mutation.data._index -= lastMutation.data.length;
+						mutation.data._index -= lastMutation.data.length - 1;
 						if (mutation.data._index < 0) mutation.data._index = 0;
 					}
 				}
@@ -39,11 +45,13 @@ class MutationController {
 
 			await mutation.save();
 			await conversations.addMutation(mutation.conversationId, mutation);
-			const text = await conversations.readConversation(mutation.conversationId);
+			const text = await conversations.readConversation(
+				mutation.conversationId
+			);
 			return {
 				text,
-				mutation
-			}
+				mutation,
+			};
 		} catch (err) {
 			throw err;
 		}
@@ -62,7 +70,7 @@ class MutationController {
 		try {
 			const mutation = await MutationModel.findByIdAndUpdate(id, body, {
 				new: true,
-				runValidators: true
+				runValidators: true,
 			});
 			return mutation;
 		} catch (err) {
