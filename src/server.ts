@@ -32,7 +32,7 @@ class Server {
 			if (error) {
 				return console.log(error);
 			}
-		
+
 			return console.log(`Server is listening on port: ${port}`);
 		});
 	}
@@ -45,7 +45,7 @@ class Server {
 		const mongo = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/colab";
 		mongoose.connect(mongo, {
 			useNewUrlParser: true,
-			useCreateIndex: true
+			useCreateIndex: true,
 		});
 		const db = mongoose.connection;
 		db.on("error", console.error.bind(console, "MongoDB Connection error"));
@@ -54,7 +54,7 @@ class Server {
 	private connectSocketIO(): void {
 		this.io = socket.listen(this.server, {
 			origins: "http://192.168.1.15:3001",
-			path: "/socket"
+			path: "/socket",
 		});
 		this.io.on("connect", socketConnection);
 	}
@@ -63,11 +63,7 @@ class Server {
 		this.app.use(expressSanitizer());
 		this.app.use(bodyParser.json());
 		this.app.use(bodyParser.urlencoded({ extended: true }));
-		this.app.use(
-			cors({
-				origin: "http://192.168.1.15:3001 https://app.ava.me"
-			})
-		);
+		this.app.use(cors());
 	}
 
 	private mountRoutes(): void {
