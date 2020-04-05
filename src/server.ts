@@ -54,7 +54,7 @@ class Server {
 
 	private connectSocketIO(): void {
 		this.io = socket.listen(this.server, {
-			origins: "http://192.168.1.15:3001",
+			origins: "*:*",
 			path: "/socket",
 		});
 		this.io.on("connect", socketConnection);
