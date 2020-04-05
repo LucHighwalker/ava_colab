@@ -20,7 +20,7 @@ class Mutation {
 					ok: true,
 				});
 			} catch (err) {
-				res.status(500).json({
+				res.status(400).json({
 					msg: err.message,
 					ok: false,
 				});

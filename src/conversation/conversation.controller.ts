@@ -59,7 +59,7 @@ class ConversationController {
 		}
 	}
 
-	public async create(body: Conversation): Promise<Conversation> {
+	public async create(body: Conversation | any): Promise<Conversation> {
 		try {
 			const conversation = new ConversationModel(body);
 			await conversation.save();
