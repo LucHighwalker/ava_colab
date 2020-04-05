@@ -10,7 +10,7 @@ class MutationController {
 		let same = true;
 
 		Object.keys(mutA.origin).forEach((key) => {
-			if (mutA[key] !== mutB[key]) {
+			if (mutA.origin[key] !== mutB.origin[key]) {
 				same = false;
 				return;
 			}

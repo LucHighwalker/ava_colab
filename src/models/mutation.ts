@@ -4,32 +4,31 @@ import { Mutation } from "../interfaces/mutation";
 export const MutationSchema: Schema = new Schema({
 	author: {
 		type: String,
-		required: true
+		required: true,
 	},
 	conversationId: {
 		type: Schema.Types.ObjectId,
 		ref: "Conversation",
-		required: true
+		required: true,
 	},
 	data: {
 		_index: {
-			type: Number
+			type: Number,
 		},
 		length: {
-			type: Number
+			type: Number,
 		},
 		text: {
-			type: String
+			type: String,
 		},
 		type: {
-			type: String
-		}
+			type: String,
+		},
 	},
 	origin: {
-		Alice: Number,
-		Bob: Number
-	}
-});
+		type: Object
+	},
+}, {strict: false});
 
 const MutationModel: Model<Mutation> = model<Mutation>(
 	"Mutation",

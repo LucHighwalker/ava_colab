@@ -9,8 +9,5 @@ export interface Mutation extends Document {
 		text?: string;
 		type: string;
 	}
-	origin: {
-		Alice: number;
-		Bob: number;
-	}
+	origin: object;
 }
