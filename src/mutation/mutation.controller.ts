@@ -5,11 +5,11 @@ import conversations from "../conversation/conversation.controller";
 
 class MutationController {
 	private originsAreSame(mutA: Mutation, mutB: Mutation): Boolean {
-		if (mutA === null || mutB === null) return false;
+		if (mutA === undefined || mutA === null) return false;
 
 		let same = true;
 
-		Object.keys(mutA.origin).forEach((key) => {
+		Object.keys(mutB.origin).forEach((key) => {
 			if (mutA.origin[key] !== mutB.origin[key]) {
 				same = false;
 				return;
@@ -28,15 +28,14 @@ class MutationController {
 			);
 
 			if (this.originsAreSame(lastMutation, mutation)) {
-				console.log("origins conflict");
 				mutation.origin[lastMutation.author] !== undefined
 					? (mutation.origin[lastMutation.author] += 1)
 					: (mutation.origin[lastMutation.author] = 1);
 
 				if (lastMutation.data._index <= mutation.data._index) {
-					if (lastMutation.data.type == "insert") {
+					if (lastMutation.data.type === "insert") {
 						mutation.data._index += lastMutation.data.length;
-					} else if (lastMutation.data.type == "delete") {
+					} else if (lastMutation.data.type === "delete") {
 						mutation.data._index -= lastMutation.data.length - 1;
 						if (mutation.data._index < 0) mutation.data._index = 0;
 					}
